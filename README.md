@@ -1,73 +1,45 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+`nestjs-query` examples.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Usage
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+From the root of the repo run 
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+```sh
+npm run bootstrap
 ```
 
-## Running the app
+Then from this directory start the docker containers. 
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+docker-compose up -d
 ```
 
-## Test
+### Running Examples
 
-```bash
-# unit tests
-$ npm run test
+To run an example execute `npm run start -- {example_name}` where example name is one of the following.
 
-# e2e tests
-$ npm run test:e2e
+* [`basic`](./basic`) - A basic todo graphql API.
+* Federation
+  * [`federation:gateway`](./federation/gateway) - Graphql federation gateway
+  * [`federation:sub-task`](./federation/sub-task-graphql) - Federated sub-task  GraphQL API
+  * [`federation:tag`](./federation/tag-graphql) - Federated tag  GraphQL API
+  * [`federation:todo-item`](./federation/todo-item-graphql) - Federated todo-item  GraphQL API
+* [`offset-paging`](./offset-paging) - Example  GraphQL API that uses offset based paging with array connections
+* [`no-paging`](./no-paging) - Example  GraphQL API without paging
+* [`sequelize`](./sequelize) - Example  GraphQL API using sequelize 
+* [`subscriptions`](./subscriptions) - Example todo-item GraphQL API with subscriptions.
+* [`typeorm`](./typeorm) - Example todo-item  GraphQL API using typeorm
+* [`typeorm-multidb`](./typeorm-multidb) - Example GraphQL API using typeorm with mutliple databases
+* [`typeorm-soft-delete`](./typeorm-soft-delete) -  - Example todo-item GraphQL API using typeorm with soft deletes.
+* [`custom-service`](./custom-service) -  - Example todo with a custom-implemented service class.
 
-# test coverage
-$ npm run test:cov
+For example to run the `basic` example
+
+```sh
+npm run start -- basic
 ```
 
-## Support
+To read more about `nestjs-query` checkout the [docs](https://doug-martin.github.io/nestjs-query/docs/introduction/getting-started)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

@@ -1,8 +1,33 @@
 {
-  "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
-  "compilerOptions": {
-    "deleteOutDir": true
+  "monorepo": true,
+  "projects": {
+    "auth": {
+      "type": "application",
+      "root": "auth",
+      "entryFile": "main",
+      "sourceRoot": "auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "./tsconfig.json"
+      }
+    },
+    "basic": {
+      "type": "application",
+      "root": "basic",
+      "entryFile": "main",
+      "sourceRoot": "basic/src",
+      "compilerOptions": {
+        "tsConfigPath": "./tsconfig.json"
+      }
+    },
+    "typegoose": {
+      "type": "application",
+      "root": "typegoose",
+      "entryFile": "main",
+      "sourceRoot": "typegoose/src",
+      "compilerOptions": {
+        "tsConfigPath": "./tsconfig.json"
+      }
+    }
   }
 }

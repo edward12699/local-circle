@@ -1,21 +1,42 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
     "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "emitDeclarationOnly": false,
+    "target": "es2018",
+    "module": "ES6",
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "strict": false,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "types": [
+      "jest"
+    ],
+    "esModuleInterop": true,
     "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "rootDir": ".",
+    "experimentalDecorators": true,
+    "noImplicitAny": false
+  },
+  "include": [
+    "./helpers",
+    "**/src",
+    "**/e2e",
+    "**/ormconfig.json",
+    "node_modules/graphql-upload"
+  ],
+  "exclude": [
+    // "node_modules",
+    "dist"
+  ]
 }

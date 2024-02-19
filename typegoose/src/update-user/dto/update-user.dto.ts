@@ -1,42 +1,28 @@
 // user-profile.dto.ts
 
-import { ObjectType, Field, InputType } from '@nestjs/graphql';
-import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs';
-import Upload from 'graphql-upload/Upload.mjs';
+import { ObjectType, Field, InputType, ID } from '@nestjs/graphql';
+import { FilterableField, KeySet, CursorConnection, QueryOptions, Relation } from '@nestjs-query/query-graphql';
+let GraphQLUpload: any;
+let Upload: any;
 
-@ObjectType()
-export class UpdateUserDTO {
-  @Field()
-  status!: boolean;
+if (process.env.USE_ESM_MODULES) {
+  async function loadModule() {
+    GraphQLUpload = await import('graphql-upload/GraphQLUpload.mjs');
+    Upload = await import('graphql-upload/Upload.mjs');
+  }
+  loadModule();
 }
 
-@InputType()
-export class UpdateUserInput {
-  @Field()
-  openid!: string;
+
+
+@ObjectType("UserDTO")
+export class UserDTO {
+  @FilterableField(() => ID)
+  id?: string;
 
   @Field({ nullable: true })
   nickname?: string;
 
-  @Field(() => GraphQLUpload, { nullable: true })
-  avatar?: Promise<Upload['promise']>; // ??? to fix
-}
-
-
-@ObjectType()
-export class QueryUserDTO {
-  @Field()
-  openid!: string;
-
   @Field({ nullable: true })
-  nickname?: string;
-
-  @Field(() => GraphQLUpload, { nullable: true })
   avatarUrl?: string;
-}
-
-@InputType()
-export class QueryUserInput {
-  @Field()
-  openid!: string;
 }

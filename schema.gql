@@ -495,8 +495,10 @@ type TagTodoItemsAggregateResponse {
 }
 
 type LoginResponseDTO {
-  openid: String!
-  session_key: String!
+  id: String!
+  token: String!
+  nickname: String!
+  avatarUrl: String!
 }
 
 type TodoItemConnection {
@@ -708,6 +710,599 @@ type TodoItemSubTasksAggregateResponse {
   max: TodoItemSubTasksMaxAggregate
 }
 
+type VoteDTO {
+  id: ID!
+  voteType: String
+  createdBy: ID!
+}
+
+type Votes {
+  upVotes: Float!
+  downVotes: Float!
+}
+
+type ReplyDTO {
+  id: ID!
+  content: String!
+  images: [String!]
+  createdAt: DateTime!
+  createdBy: UserDTO!
+  votesCount: Votes!
+  votesAggregate(
+    """Filter to find records to aggregate on"""
+    filter: VoteDTOAggregateFilter
+  ): [ReplyDTOVotesAggregateResponse!]!
+  post: Post!
+  votes(
+    """Specify to filter the records returned."""
+    filter: VoteDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [VoteDTOSort!] = []
+  ): [VoteDTO!]!
+}
+
+input VoteDTOAggregateFilter {
+  and: [VoteDTOAggregateFilter!]
+  or: [VoteDTOAggregateFilter!]
+  id: IDFilterComparison
+  voteType: StringFieldComparison
+  createdBy: IDFilterComparison
+}
+
+input VoteDTOFilter {
+  and: [VoteDTOFilter!]
+  or: [VoteDTOFilter!]
+  id: IDFilterComparison
+  voteType: StringFieldComparison
+  createdBy: IDFilterComparison
+}
+
+input VoteDTOSort {
+  field: VoteDTOSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum VoteDTOSortFields {
+  id
+  voteType
+  createdBy
+}
+
+type UserDTO {
+  id: ID!
+  nickname: String
+  avatarUrl: String
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String
+  images: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: UserDTO!
+  repliesAggregate(
+    """Filter to find records to aggregate on"""
+    filter: ReplyDTOAggregateFilter
+  ): [PostRepliesAggregateResponse!]!
+  replies(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: ReplyDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [ReplyDTOSort!] = []
+  ): PostRepliesConnection!
+}
+
+input ReplyDTOAggregateFilter {
+  and: [ReplyDTOAggregateFilter!]
+  or: [ReplyDTOAggregateFilter!]
+  id: IDFilterComparison
+  createdAt: DateFieldComparison
+}
+
+input ReplyDTOFilter {
+  and: [ReplyDTOFilter!]
+  or: [ReplyDTOFilter!]
+  id: IDFilterComparison
+  createdAt: DateFieldComparison
+}
+
+input ReplyDTOSort {
+  field: ReplyDTOSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum ReplyDTOSortFields {
+  id
+  createdAt
+}
+
+type PageInfo1 {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type PostEdge1 {
+  cursor: String!
+  node: Post!
+}
+
+type withinDistancePostConnection {
+  edges: [PostEdge1!]!
+  pageInfo: PageInfo1!
+}
+
+type PostEdge {
+  """The node containing the Post"""
+  node: Post!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type PostConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [PostEdge!]!
+
+  """Fetch total count of records"""
+  totalCount: Int!
+}
+
+type UserDTODeleteResponse {
+  id: ID
+  nickname: String
+  avatarUrl: String
+}
+
+type UserDTOEdge {
+  """The node containing the UserDTO"""
+  node: UserDTO!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type UserDTOConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [UserDTOEdge!]!
+}
+
+type UserDTOAggregateGroupBy {
+  id: ID
+}
+
+type UserDTOCountAggregate {
+  id: Int
+}
+
+type UserDTOMinAggregate {
+  id: ID
+}
+
+type UserDTOMaxAggregate {
+  id: ID
+}
+
+type UserDTOAggregateResponse {
+  groupBy: UserDTOAggregateGroupBy
+  count: UserDTOCountAggregate
+  min: UserDTOMinAggregate
+  max: UserDTOMaxAggregate
+}
+
+type PostDeleteResponse {
+  id: ID
+  title: String
+  content: String
+  images: [String!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: UserDTO
+}
+
+type PostAggregateGroupBy {
+  id: ID
+  title: String
+  content: String
+  createdAt: DateTime
+}
+
+type PostCountAggregate {
+  id: Int
+  title: Int
+  content: Int
+  createdAt: Int
+}
+
+type PostMinAggregate {
+  id: ID
+  title: String
+  content: String
+  createdAt: DateTime
+}
+
+type PostMaxAggregate {
+  id: ID
+  title: String
+  content: String
+  createdAt: DateTime
+}
+
+type PostAggregateResponse {
+  groupBy: PostAggregateGroupBy
+  count: PostCountAggregate
+  min: PostMinAggregate
+  max: PostMaxAggregate
+}
+
+type ReplyDTOEdge {
+  """The node containing the ReplyDTO"""
+  node: ReplyDTO!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type PostRepliesConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [ReplyDTOEdge!]!
+}
+
+type PostRepliesAggregateGroupBy {
+  id: ID
+  createdAt: DateTime
+}
+
+type PostRepliesCountAggregate {
+  id: Int
+  createdAt: Int
+}
+
+type PostRepliesMinAggregate {
+  id: ID
+  createdAt: DateTime
+}
+
+type PostRepliesMaxAggregate {
+  id: ID
+  createdAt: DateTime
+}
+
+type PostRepliesAggregateResponse {
+  groupBy: PostRepliesAggregateGroupBy
+  count: PostRepliesCountAggregate
+  min: PostRepliesMinAggregate
+  max: PostRepliesMaxAggregate
+}
+
+type ReplyDTODeleteResponse {
+  id: ID
+  content: String
+  images: [String!]
+  createdAt: DateTime
+  createdBy: ID
+}
+
+type ReplyDTOConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [ReplyDTOEdge!]!
+}
+
+type ReplyDTOAggregateGroupBy {
+  id: ID
+  createdAt: DateTime
+}
+
+type ReplyDTOCountAggregate {
+  id: Int
+  createdAt: Int
+}
+
+type ReplyDTOMinAggregate {
+  id: ID
+  createdAt: DateTime
+}
+
+type ReplyDTOMaxAggregate {
+  id: ID
+  createdAt: DateTime
+}
+
+type ReplyDTOAggregateResponse {
+  groupBy: ReplyDTOAggregateGroupBy
+  count: ReplyDTOCountAggregate
+  min: ReplyDTOMinAggregate
+  max: ReplyDTOMaxAggregate
+}
+
+type ReplyDTOVotesAggregateGroupBy {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type ReplyDTOVotesCountAggregate {
+  id: Int
+  voteType: Int
+  createdBy: Int
+}
+
+type ReplyDTOVotesMinAggregate {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type ReplyDTOVotesMaxAggregate {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type ReplyDTOVotesAggregateResponse {
+  groupBy: ReplyDTOVotesAggregateGroupBy
+  count: ReplyDTOVotesCountAggregate
+  min: ReplyDTOVotesMinAggregate
+  max: ReplyDTOVotesMaxAggregate
+}
+
+type VoteDTODeleteResponse {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type VoteDTOEdge {
+  """The node containing the VoteDTO"""
+  node: VoteDTO!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type VoteDTOConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [VoteDTOEdge!]!
+}
+
+type VoteDTOAggregateGroupBy {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type VoteDTOCountAggregate {
+  id: Int
+  voteType: Int
+  createdBy: Int
+}
+
+type VoteDTOMinAggregate {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type VoteDTOMaxAggregate {
+  id: ID
+  voteType: String
+  createdBy: ID
+}
+
+type VoteDTOAggregateResponse {
+  groupBy: VoteDTOAggregateGroupBy
+  count: VoteDTOCountAggregate
+  min: VoteDTOMinAggregate
+  max: VoteDTOMaxAggregate
+}
+
+type Chatroom {
+  id: ID!
+  title: String!
+  content: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: UserDTO!
+  liveNumber: Float!
+  hotCount: Float!
+  distance: Float!
+}
+
+type tempChatroomDTO {
+  id: String!
+  title: String!
+  distance: Float!
+  currentUsers(
+    """Specify to filter the records returned."""
+    filter: UserDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [UserDTOSort!] = []
+  ): [UserDTO!]!
+  currentUsersAggregate(
+    """Filter to find records to aggregate on"""
+    filter: UserDTOAggregateFilter
+  ): [TempChatroomDTOCurrentUsersAggregateResponse!]!
+}
+
+input UserDTOFilter {
+  and: [UserDTOFilter!]
+  or: [UserDTOFilter!]
+  id: IDFilterComparison
+}
+
+input UserDTOSort {
+  field: UserDTOSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum UserDTOSortFields {
+  id
+}
+
+input UserDTOAggregateFilter {
+  and: [UserDTOAggregateFilter!]
+  or: [UserDTOAggregateFilter!]
+  id: IDFilterComparison
+}
+
+type WithinDistanceChatroomsResponse {
+  result: [tempChatroomDTO!]!
+}
+
+type chatHistoryDTO {
+  _id: ID!
+  history: [chatHistoryItemDTO!]
+}
+
+type chatHistoryItemDTO {
+  createdBy: UserDTO
+  message: String
+  createdAt: DateTime
+}
+
+type ChatroomEdge {
+  """The node containing the Chatroom"""
+  node: Chatroom!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type TempChatroomDTODeleteResponse {
+  id: String
+  title: String
+  distance: Float
+}
+
+type tempChatroomDTOEdge {
+  """The node containing the tempChatroomDTO"""
+  node: tempChatroomDTO!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type TempChatroomDTOConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [tempChatroomDTOEdge!]!
+
+  """Fetch total count of records"""
+  totalCount: Int!
+}
+
+type tempChatroomDTOAggregateGroupBy {
+  id: String
+}
+
+type tempChatroomDTOCountAggregate {
+  id: Int
+}
+
+type tempChatroomDTOMinAggregate {
+  id: String
+}
+
+type tempChatroomDTOMaxAggregate {
+  id: String
+}
+
+type tempChatroomDTOAggregateResponse {
+  groupBy: tempChatroomDTOAggregateGroupBy
+  count: tempChatroomDTOCountAggregate
+  min: tempChatroomDTOMinAggregate
+  max: tempChatroomDTOMaxAggregate
+}
+
+type TempChatroomDTOCurrentUsersAggregateGroupBy {
+  id: ID
+}
+
+type TempChatroomDTOCurrentUsersCountAggregate {
+  id: Int
+}
+
+type TempChatroomDTOCurrentUsersMinAggregate {
+  id: ID
+}
+
+type TempChatroomDTOCurrentUsersMaxAggregate {
+  id: ID
+}
+
+type TempChatroomDTOCurrentUsersAggregateResponse {
+  groupBy: TempChatroomDTOCurrentUsersAggregateGroupBy
+  count: TempChatroomDTOCurrentUsersCountAggregate
+  min: TempChatroomDTOCurrentUsersMinAggregate
+  max: TempChatroomDTOCurrentUsersMaxAggregate
+}
+
+type Message {
+  success: Boolean!
+}
+
+type MessageDeleteResponse {
+  success: Boolean
+}
+
+type MessageEdge {
+  """The node containing the Message"""
+  node: Message!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type MessageConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [MessageEdge!]!
+}
+
+type MessageAggregateGroupBy {
+  success: Boolean
+}
+
+type MessageCountAggregate {
+  success: Int
+}
+
+type MessageAggregateResponse {
+  groupBy: MessageAggregateGroupBy
+  count: MessageCountAggregate
+}
+
 type SubTaskDeleteResponse {
   id: ID
   title: String
@@ -777,6 +1372,11 @@ type SubTaskAggregateResponse {
   count: SubTaskCountAggregate
   min: SubTaskMinAggregate
   max: SubTaskMaxAggregate
+}
+
+input Location {
+  type: String
+  coordinates: [Float!]!
 }
 
 type Query {
@@ -854,7 +1454,244 @@ type Query {
     """Specify to sort results."""
     sorting: [TagSort!] = []
   ): TagConnection!
-  login(code: String!): LoginResponseDTO!
+  withinDistancePosts(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: PostFilter = {}
+
+    """Specify to sort results."""
+    sorting: [PostSort!] = []
+    location: Location!
+    withinDistance: Float!
+    first: Float!
+    after: String
+  ): withinDistancePostConnection!
+  userDTOAggregate(
+    """Filter to find records to aggregate on"""
+    filter: UserDTOAggregateFilter
+  ): [UserDTOAggregateResponse!]!
+  userDTO(
+    """The id of the record to find."""
+    id: ID!
+  ): UserDTO
+  userDTOS(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: UserDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [UserDTOSort!] = []
+  ): UserDTOConnection!
+  postAggregate(
+    """Filter to find records to aggregate on"""
+    filter: PostAggregateFilter
+  ): [PostAggregateResponse!]!
+  post(
+    """The id of the record to find."""
+    id: ID!
+  ): Post
+  posts(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: PostFilter = {}
+
+    """Specify to sort results."""
+    sorting: [PostSort!] = []
+  ): PostConnection!
+  replyDTOAggregate(
+    """Filter to find records to aggregate on"""
+    filter: ReplyDTOAggregateFilter
+  ): [ReplyDTOAggregateResponse!]!
+  replyDTO(
+    """The id of the record to find."""
+    id: ID!
+  ): ReplyDTO
+  replyDTOS(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: ReplyDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [ReplyDTOSort!] = []
+  ): ReplyDTOConnection!
+  voteDTOAggregate(
+    """Filter to find records to aggregate on"""
+    filter: VoteDTOAggregateFilter
+  ): [VoteDTOAggregateResponse!]!
+  voteDTO(
+    """The id of the record to find."""
+    id: ID!
+  ): VoteDTO
+  voteDTOS(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: VoteDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [VoteDTOSort!] = []
+  ): VoteDTOConnection!
+  withinDistanceChatrooms(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: ChatroomFilter = {}
+
+    """Specify to sort results."""
+    sorting: [ChatroomSort!] = []
+    location: Location!
+    withinDistance: Float!
+  ): WithinDistanceChatroomsResponse!
+  chatHistory(limit: Float!, timestamp: String!, roomId: String!): chatHistoryDTO!
+  tempChatroomDTOAggregate(
+    """Filter to find records to aggregate on"""
+    filter: tempChatroomDTOAggregateFilter
+  ): [tempChatroomDTOAggregateResponse!]!
+  tempChatroomDTO(
+    """The id of the record to find."""
+    id: ID!
+  ): tempChatroomDTO
+  tempChatroomDTOS(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: tempChatroomDTOFilter = {}
+
+    """Specify to sort results."""
+    sorting: [tempChatroomDTOSort!] = []
+  ): TempChatroomDTOConnection!
+  messageAggregate(
+    """Filter to find records to aggregate on"""
+    filter: MessageAggregateFilter
+  ): [MessageAggregateResponse!]!
+  message(
+    """The id of the record to find."""
+    id: ID!
+  ): Message
+  messages(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: MessageFilter = {}
+
+    """Specify to sort results."""
+    sorting: [MessageSort!] = []
+  ): MessageConnection!
+}
+
+input PostFilter {
+  and: [PostFilter!]
+  or: [PostFilter!]
+  id: IDFilterComparison
+  title: StringFieldComparison
+  content: StringFieldComparison
+  createdAt: DateFieldComparison
+}
+
+input PostSort {
+  field: PostSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum PostSortFields {
+  id
+  title
+  content
+  createdAt
+}
+
+input PostAggregateFilter {
+  and: [PostAggregateFilter!]
+  or: [PostAggregateFilter!]
+  id: IDFilterComparison
+  title: StringFieldComparison
+  content: StringFieldComparison
+  createdAt: DateFieldComparison
+}
+
+input ChatroomFilter {
+  and: [ChatroomFilter!]
+  or: [ChatroomFilter!]
+  id: IDFilterComparison
+  title: StringFieldComparison
+  content: StringFieldComparison
+  createdAt: DateFieldComparison
+  liveNumber: NumberFieldComparison
+  hotCount: NumberFieldComparison
+  distance: NumberFieldComparison
+}
+
+input ChatroomSort {
+  field: ChatroomSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum ChatroomSortFields {
+  id
+  title
+  content
+  createdAt
+  liveNumber
+  hotCount
+  distance
+}
+
+input tempChatroomDTOAggregateFilter {
+  and: [tempChatroomDTOAggregateFilter!]
+  or: [tempChatroomDTOAggregateFilter!]
+  id: StringFieldComparison
+}
+
+input tempChatroomDTOFilter {
+  and: [tempChatroomDTOFilter!]
+  or: [tempChatroomDTOFilter!]
+  id: StringFieldComparison
+}
+
+input tempChatroomDTOSort {
+  field: tempChatroomDTOSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum tempChatroomDTOSortFields {
+  id
+}
+
+input MessageAggregateFilter {
+  and: [MessageAggregateFilter!]
+  or: [MessageAggregateFilter!]
+  success: BooleanFieldComparison
+}
+
+input MessageFilter {
+  and: [MessageFilter!]
+  or: [MessageFilter!]
+  success: BooleanFieldComparison
+}
+
+input MessageSort {
+  field: MessageSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum MessageSortFields {
+  success
 }
 
 type Mutation {
@@ -882,6 +1719,54 @@ type Mutation {
   updateManyTags(input: UpdateManyTagsInput!): UpdateManyResponse!
   deleteOneTag(input: DeleteOneTagInput!): TagDeleteResponse!
   deleteManyTags(input: DeleteManyTagsInput!): DeleteManyResponse!
+  login(code: String!): LoginResponseDTO!
+  createOneUserDTO(input: CreateOneUserDTOInput!): UserDTO!
+  createManyUserDTOS(input: CreateManyUserDTOSInput!): [UserDTO!]!
+  updateOneUserDTO(input: UpdateOneUserDTOInput!): UserDTO!
+  updateManyUserDTOS(input: UpdateManyUserDTOSInput!): UpdateManyResponse!
+  deleteOneUserDTO(input: DeleteOneUserDTOInput!): UserDTODeleteResponse!
+  deleteManyUserDTOS(input: DeleteManyUserDTOSInput!): DeleteManyResponse!
+  addRepliesToPost(input: AddRepliesToPostInput!): Post!
+  setRepliesOnPost(input: SetRepliesOnPostInput!): Post!
+  createOnePost(input: CreateOnePostInput!): Post!
+  createManyPosts(input: CreateManyPostsInput!): [Post!]!
+  updateOnePost(input: UpdateOnePostInput!): Post!
+  updateManyPosts(input: UpdateManyPostsInput!): UpdateManyResponse!
+  deleteOnePost(input: DeleteOnePostInput!): PostDeleteResponse!
+  deleteManyPosts(input: DeleteManyPostsInput!): DeleteManyResponse!
+  createOneReplyDTO(input: CreateOneReplyDTOInput!): ReplyDTO!
+  createManyReplyDTOS(input: CreateManyReplyDTOSInput!): [ReplyDTO!]!
+  createOneReply1(input: ReplyInput!): ReplyDTO!
+  setPostOnReplyDTO(input: SetPostOnReplyDTOInput!): ReplyDTO!
+  addVotesToReplyDTO(input: AddVotesToReplyDTOInput!): ReplyDTO!
+  setVotesOnReplyDTO(input: SetVotesOnReplyDTOInput!): ReplyDTO!
+  removeVotesFromReplyDTO(input: RemoveVotesFromReplyDTOInput!): ReplyDTO!
+  updateOneReplyDTO(input: UpdateOneReplyDTOInput!): ReplyDTO!
+  updateManyReplyDTOS(input: UpdateManyReplyDTOSInput!): UpdateManyResponse!
+  deleteOneReplyDTO(input: DeleteOneReplyDTOInput!): ReplyDTODeleteResponse!
+  deleteManyReplyDTOS(input: DeleteManyReplyDTOSInput!): DeleteManyResponse!
+  createOneVoteDTO(input: CreateOneVoteDTOInput!): VoteDTO!
+  createManyVoteDTOS(input: CreateManyVoteDTOSInput!): [VoteDTO!]!
+  updateOneVoteDTO(input: UpdateOneVoteDTOInput!): VoteDTO!
+  updateManyVoteDTOS(input: UpdateManyVoteDTOSInput!): UpdateManyResponse!
+  deleteOneVoteDTO(input: DeleteOneVoteDTOInput!): VoteDTODeleteResponse!
+  deleteManyVoteDTOS(input: DeleteManyVoteDTOSInput!): DeleteManyResponse!
+  sendMessage(message: String!, roomId: String!): Boolean!
+  addCurrentUsersToTempChatroomDTO(input: AddCurrentUsersToTempChatroomDTOInput!): tempChatroomDTO!
+  setCurrentUsersOnTempChatroomDTO(input: SetCurrentUsersOnTempChatroomDTOInput!): tempChatroomDTO!
+  removeCurrentUsersFromTempChatroomDTO(input: RemoveCurrentUsersFromTempChatroomDTOInput!): tempChatroomDTO!
+  createOneTempChatroomDTO(input: CreateOneTempChatroomDTOInput!): tempChatroomDTO!
+  createManyTempChatroomDTOS(input: CreateManyTempChatroomDTOSInput!): [tempChatroomDTO!]!
+  updateOneTempChatroomDTO(input: UpdateOneTempChatroomDTOInput!): tempChatroomDTO!
+  updateManyTempChatroomDTOS(input: UpdateManyTempChatroomDTOSInput!): UpdateManyResponse!
+  deleteOneTempChatroomDTO(input: DeleteOneTempChatroomDTOInput!): TempChatroomDTODeleteResponse!
+  deleteManyTempChatroomDTOS(input: DeleteManyTempChatroomDTOSInput!): DeleteManyResponse!
+  createOneMessage(input: CreateOneMessageInput!): Message!
+  createManyMessages(input: CreateManyMessagesInput!): [Message!]!
+  updateOneMessage(input: UpdateOneMessageInput!): Message!
+  updateManyMessages(input: UpdateManyMessagesInput!): UpdateManyResponse!
+  deleteOneMessage(input: DeleteOneMessageInput!): MessageDeleteResponse!
+  deleteManyMessages(input: DeleteManyMessagesInput!): DeleteManyResponse!
 }
 
 input SetTodoItemOnSubTaskInput {
@@ -1143,4 +2028,431 @@ input TagDeleteFilter {
   updatedAt: DateFieldComparison
   createdBy: StringFieldComparison
   updatedBy: StringFieldComparison
+}
+
+input CreateOneUserDTOInput {
+  """The record to create"""
+  userDTO: CreateUserDTO!
+}
+
+input CreateUserDTO {
+  id: ID
+  nickname: String
+  avatarUrl: String
+}
+
+input CreateManyUserDTOSInput {
+  """Array of records to create"""
+  userDTOS: [CreateUserDTO!]!
+}
+
+input UpdateOneUserDTOInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: UpdateUserDTO!
+}
+
+input UpdateUserDTO {
+  id: ID
+  nickname: String
+  avatarUrl: String
+}
+
+input UpdateManyUserDTOSInput {
+  """Filter used to find fields to update"""
+  filter: UserDTOUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: UpdateUserDTO!
+}
+
+input UserDTOUpdateFilter {
+  and: [UserDTOUpdateFilter!]
+  or: [UserDTOUpdateFilter!]
+  id: IDFilterComparison
+}
+
+input DeleteOneUserDTOInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyUserDTOSInput {
+  """Filter to find records to delete"""
+  filter: UserDTODeleteFilter!
+}
+
+input UserDTODeleteFilter {
+  and: [UserDTODeleteFilter!]
+  or: [UserDTODeleteFilter!]
+  id: IDFilterComparison
+}
+
+input AddRepliesToPostInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input SetRepliesOnPostInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input CreateOnePostInput {
+  """The record to create"""
+  post: PostInput!
+}
+
+input PostInput {
+  title: String!
+  content: String!
+  images: [String!]
+  location: Location!
+  createdBy: ID
+}
+
+input CreateManyPostsInput {
+  """Array of records to create"""
+  posts: [PostInput!]!
+}
+
+input UpdateOnePostInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: PostInput!
+}
+
+input UpdateManyPostsInput {
+  """Filter used to find fields to update"""
+  filter: PostUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: PostInput!
+}
+
+input PostUpdateFilter {
+  and: [PostUpdateFilter!]
+  or: [PostUpdateFilter!]
+  id: IDFilterComparison
+  title: StringFieldComparison
+  content: StringFieldComparison
+  createdAt: DateFieldComparison
+}
+
+input DeleteOnePostInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyPostsInput {
+  """Filter to find records to delete"""
+  filter: PostDeleteFilter!
+}
+
+input PostDeleteFilter {
+  and: [PostDeleteFilter!]
+  or: [PostDeleteFilter!]
+  id: IDFilterComparison
+  title: StringFieldComparison
+  content: StringFieldComparison
+  createdAt: DateFieldComparison
+}
+
+input CreateOneReplyDTOInput {
+  """The record to create"""
+  replyDTO: ReplyInput!
+}
+
+input ReplyInput {
+  content: String!
+  images: [String!]
+  createdBy: String
+  createdAt: DateTime
+  post: ID!
+}
+
+input CreateManyReplyDTOSInput {
+  """Array of records to create"""
+  replyDTOS: [ReplyInput!]!
+}
+
+input SetPostOnReplyDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The id of relation."""
+  relationId: ID!
+}
+
+input AddVotesToReplyDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input SetVotesOnReplyDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input RemoveVotesFromReplyDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input UpdateOneReplyDTOInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: ReplyInput!
+}
+
+input UpdateManyReplyDTOSInput {
+  """Filter used to find fields to update"""
+  filter: ReplyDTOUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: ReplyInput!
+}
+
+input ReplyDTOUpdateFilter {
+  and: [ReplyDTOUpdateFilter!]
+  or: [ReplyDTOUpdateFilter!]
+  id: IDFilterComparison
+  createdAt: DateFieldComparison
+}
+
+input DeleteOneReplyDTOInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyReplyDTOSInput {
+  """Filter to find records to delete"""
+  filter: ReplyDTODeleteFilter!
+}
+
+input ReplyDTODeleteFilter {
+  and: [ReplyDTODeleteFilter!]
+  or: [ReplyDTODeleteFilter!]
+  id: IDFilterComparison
+  createdAt: DateFieldComparison
+}
+
+input CreateOneVoteDTOInput {
+  """The record to create"""
+  voteDTO: VoteInput!
+}
+
+input VoteInput {
+  voteType: String!
+  createdBy: String
+}
+
+input CreateManyVoteDTOSInput {
+  """Array of records to create"""
+  voteDTOS: [VoteInput!]!
+}
+
+input UpdateOneVoteDTOInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: VoteInput!
+}
+
+input UpdateManyVoteDTOSInput {
+  """Filter used to find fields to update"""
+  filter: VoteDTOUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: VoteInput!
+}
+
+input VoteDTOUpdateFilter {
+  and: [VoteDTOUpdateFilter!]
+  or: [VoteDTOUpdateFilter!]
+  id: IDFilterComparison
+  voteType: StringFieldComparison
+  createdBy: IDFilterComparison
+}
+
+input DeleteOneVoteDTOInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyVoteDTOSInput {
+  """Filter to find records to delete"""
+  filter: VoteDTODeleteFilter!
+}
+
+input VoteDTODeleteFilter {
+  and: [VoteDTODeleteFilter!]
+  or: [VoteDTODeleteFilter!]
+  id: IDFilterComparison
+  voteType: StringFieldComparison
+  createdBy: IDFilterComparison
+}
+
+input AddCurrentUsersToTempChatroomDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input SetCurrentUsersOnTempChatroomDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input RemoveCurrentUsersFromTempChatroomDTOInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input CreateOneTempChatroomDTOInput {
+  """The record to create"""
+  tempChatroomDTO: ChatroomInput!
+}
+
+input ChatroomInput {
+  title: String!
+  content: String
+  location: Location!
+  createdBy: ID
+}
+
+input CreateManyTempChatroomDTOSInput {
+  """Array of records to create"""
+  tempChatroomDTOS: [ChatroomInput!]!
+}
+
+input UpdateOneTempChatroomDTOInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: ChatroomInput!
+}
+
+input UpdateManyTempChatroomDTOSInput {
+  """Filter used to find fields to update"""
+  filter: tempChatroomDTOUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: ChatroomInput!
+}
+
+input tempChatroomDTOUpdateFilter {
+  and: [tempChatroomDTOUpdateFilter!]
+  or: [tempChatroomDTOUpdateFilter!]
+  id: StringFieldComparison
+}
+
+input DeleteOneTempChatroomDTOInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyTempChatroomDTOSInput {
+  """Filter to find records to delete"""
+  filter: tempChatroomDTODeleteFilter!
+}
+
+input tempChatroomDTODeleteFilter {
+  and: [tempChatroomDTODeleteFilter!]
+  or: [tempChatroomDTODeleteFilter!]
+  id: StringFieldComparison
+}
+
+input CreateOneMessageInput {
+  """The record to create"""
+  message: MessageInput!
+}
+
+input MessageInput {
+  sender: String!
+  contentType: String!
+  content: String!
+  timestamp: DateTime!
+}
+
+input CreateManyMessagesInput {
+  """Array of records to create"""
+  messages: [MessageInput!]!
+}
+
+input UpdateOneMessageInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: UpdateMessage!
+}
+
+input UpdateMessage {
+  success: Boolean
+}
+
+input UpdateManyMessagesInput {
+  """Filter used to find fields to update"""
+  filter: MessageUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: UpdateMessage!
+}
+
+input MessageUpdateFilter {
+  and: [MessageUpdateFilter!]
+  or: [MessageUpdateFilter!]
+  success: BooleanFieldComparison
+}
+
+input DeleteOneMessageInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyMessagesInput {
+  """Filter to find records to delete"""
+  filter: MessageDeleteFilter!
+}
+
+input MessageDeleteFilter {
+  and: [MessageDeleteFilter!]
+  or: [MessageDeleteFilter!]
+  success: BooleanFieldComparison
+}
+
+type Subscription {
+  subscribeToMessageAdded(userId: String!, roomId: String!): String!
 }

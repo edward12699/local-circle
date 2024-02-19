@@ -6,13 +6,13 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      skipMissingProperties: false,
-      forbidUnknownValues: true,
-    }),
+    // new ValidationPipe({
+    //   transform: true,
+    //   whitelist: true,
+    //   forbidNonWhitelisted: true,
+    //   skipMissingProperties: false,
+    //   forbidUnknownValues: false,// 据说是个库的bug，先设为false,https://github.com/typestack/class-validator/issues/1873
+    // }),
   );
 
   await app.listen(3000);

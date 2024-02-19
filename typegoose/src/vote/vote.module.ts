@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { NestjsQueryTypegooseModule } from '@nestjs-query/query-typegoose';
 import { VoteInputDTO } from './dto/vote-input.dto';
 import { VoteUpdateDTO } from './dto/vote-update.dto';
-import { VoteResultDTO } from './dto/vote.dto'
+import { VoteDTO } from './dto/vote.dto'
 import { VoteEntity } from './vote.entity';
 
 @Module({
@@ -12,10 +12,10 @@ import { VoteEntity } from './vote.entity';
       imports: [NestjsQueryTypegooseModule.forFeature([VoteEntity])],
       resolvers: [
         {
-          DTOClass: VoteResultDTO,
+          DTOClass: VoteDTO,
           EntityClass: VoteEntity,
           CreateDTOClass: VoteInputDTO,
-          UpdateDTOClass: VoteUpdateDTO,
+          UpdateDTOClass: VoteInputDTO,
           enableAggregate: true,
         },
       ],

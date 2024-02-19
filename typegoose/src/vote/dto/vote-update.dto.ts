@@ -1,6 +1,6 @@
 import { IsOptional, IsString, ValidateNested, IsBoolean, IsMongoId, IsArray, IsNotEmpty, IsDate } from 'class-validator';
 import { Type } from 'class-transformer'
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
 
@@ -18,7 +18,7 @@ export class VoteUpdateDTO {
   @Field({ nullable: false })
   voteType!: string;
 
-  @Field()
+  @Field(() => ID)
   @IsMongoId()
   @IsNotEmpty()
   reply!: Types.ObjectId;

@@ -1,6 +1,7 @@
 import { Base } from '@typegoose/typegoose/lib/defaultClasses';
 import { Prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
+import { UserEntity } from '../update-user/user.entity'
 
 @modelOptions({
   schemaOptions: {
@@ -14,13 +15,10 @@ export class VoteEntity implements Base {
 
   id!: string;
 
-  @Prop({ required: true })
-  reply!: Types.ObjectId;
-
   //"upvote" 或 "downvote"
-  @Prop()
+  @Prop({ required: false })
   voteType?: string;
 
-  @Prop({ required: true })
-  user!: Types.ObjectId;
+  @Prop({ ref: () => UserEntity })
+  createdBy!: Ref<UserEntity>;
 }

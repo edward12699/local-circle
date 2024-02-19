@@ -1,10 +1,14 @@
 import { Base } from '@typegoose/typegoose/lib/defaultClasses';
 import { Prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
+import { PostEntity } from '../post/post.entity';
+import { VoteEntity } from '../vote/vote.entity';
+import { UserEntity } from '../update-user/user.entity'
 
-interface votes {
-  upvotes: number,
-  downvotes: number
+
+interface Votes {
+  upVotes: number,
+  downVotes: number
 }
 
 
@@ -27,17 +31,17 @@ export class ReplyEntity implements Base {
   images?: Array<string>
 
 
-  @Prop({ required: true })
-  createdAt!: Date;
+  // @Prop({ required: true })
+  // createdAt!: Date;
 
 
-  @Prop({ required: true })
-  user?: Types.ObjectId;
+  @Prop({ ref: () => UserEntity })
+  createdBy!: Ref<UserEntity>;
 
-  @Prop({ required: true })
-  post?: Types.ObjectId
+  @Prop({ ref: () => PostEntity, required: true })
+  post!: Ref<PostEntity>;
 
 
-  @Prop({ required: true })
-  votes!: votes
+  @Prop({ ref: () => VoteEntity, required: false })
+  votes?: Ref<VoteEntity>[];
 }

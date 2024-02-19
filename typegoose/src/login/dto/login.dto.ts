@@ -4,9 +4,15 @@ import { ObjectType, Field } from '@nestjs/graphql';
 @ObjectType()
 export class LoginResponseDTO {
   @Field()
-  openid!: string;
+  id!: string;
 
   @Field()
-  session_key!: string;
+  token!: string;
+
+  @Field()
+  nickname!: string;
+
+  @Field()
+  avatarUrl!: string;
 
 }

@@ -8,7 +8,7 @@
     "importHelpers": true,
     "emitDeclarationOnly": false,
     "target": "es2018",
-    "module": "ES6",
+    "module": "CommonJS",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "forceConsistentCasingInFileNames": true,
@@ -25,6 +25,7 @@
     "esModuleInterop": true,
     "outDir": "./dist",
     "rootDir": ".",
+    "useDefineForClassFields": false,
     "experimentalDecorators": true,
     "noImplicitAny": false
   },

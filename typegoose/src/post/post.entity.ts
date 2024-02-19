@@ -1,15 +1,12 @@
 import { Base } from '@typegoose/typegoose/lib/defaultClasses';
-import { Prop, modelOptions, Ref } from '@typegoose/typegoose';
+import { Prop, modelOptions, Ref, index } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
+import { Field, InputType } from '@nestjs/graphql';
+import { UserEntity } from '../update-user/user.entity'
+import { ReplyEntity } from '../reply/reply.entity';
 
 
-export class Location {
-  @Prop({ required: true, enum: ['Point'] })
-  type!: string;
-
-  @Prop({ required: true })
-  coordinates!: number[]; //[经度, 纬度]
-}
+import { LocationEntity } from '../shared/index';
 
 @modelOptions({
   schemaOptions: {
@@ -18,6 +15,7 @@ export class Location {
     toObject: { virtuals: true },
   },
 })
+@index({ location: '2dsphere' })
 export class PostEntity implements Base {
   _id!: Types.ObjectId;
 
@@ -33,16 +31,28 @@ export class PostEntity implements Base {
   images?: Array<string>
 
 
-  @Prop({ required: true })
-  createdAt!: Date;
+  // 这两个都会自动生成，不用指明了
+
+  // @Prop({ required: false })
+  // createdAt?: Date;
+
+  // @Prop({ required: false })
+  // updatedAt?: Date;
 
 
-  @Prop({ required: true })
-  location!: Location
+  @Prop({ required: true, type: LocationEntity })
+  location!: LocationEntity
 
-  @Prop({ required: true })
-  user?: Types.ObjectId;
+  @Prop({ ref: () => UserEntity })
+  createdBy!: Ref<UserEntity>;
 
-  @Prop()
-  replies?: Array<Types.ObjectId>
+  // @Prop({
+  //   ref: 'ReplyEntity',
+  //   localField: '_id',
+  //   foreignField: 'post',
+  // })
+  @Prop({ ref: () => ReplyEntity })
+  replies?: Ref<ReplyEntity>[];
 }
+
+

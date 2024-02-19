@@ -1,5 +1,5 @@
 // auth.resolver.ts
-import { Resolver, Args, Query } from '@nestjs/graphql';
+import { Resolver, Args, Query, Mutation } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { LoginResponseDTO } from './dto/login.dto';
 
@@ -7,7 +7,7 @@ import { LoginResponseDTO } from './dto/login.dto';
 export class AuthResolver {
   constructor(private authService: AuthService) { }
 
-  @Query(() => LoginResponseDTO)
+  @Mutation(() => LoginResponseDTO)
   async login(@Args('code') code: string): Promise<LoginResponseDTO> {
     return this.authService.loginWithWeChat(code);
   }

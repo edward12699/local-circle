@@ -1,24 +1,29 @@
 import { NestjsQueryGraphQLModule } from '@nestjs-query/query-graphql';
 import { Module } from '@nestjs/common';
 import { NestjsQueryTypegooseModule } from '@nestjs-query/query-typegoose';
-import { User } from './user.entity'
-import { UpdateUserDTO, UpdateUserInput, QueryUserDTO, QueryUserInput } from "./dto/update-user.dto"
+import { UserEntity } from './user.entity'
+import { TodoItemEntity } from '../todo-item/todo-item.entity';
+import { UserDTO, } from "./dto/update-user.dto"
+import { UserAssembler } from './user.assembler';
+import { UserService } from './user.service'
 
 @Module({
+  providers: [UserService],
+  exports: [UserService],
   imports: [
     NestjsQueryGraphQLModule.forFeature({
-      imports: [NestjsQueryTypegooseModule.forFeature([User])],
+      imports: [NestjsQueryTypegooseModule.forFeature([UserEntity])],
+      assemblers: [UserAssembler],
       resolvers: [
         {
-          DTOClass: UpdateUserDTO,
-          EntityClass: User,
-          CreateDTOClass: UpdateUserInput,
-          UpdateDTOClass: UpdateUserInput,
+          DTOClass: UserDTO,
+          AssemblerClass: UserAssembler,
+          EntityClass: UserEntity,
           enableAggregate: true,
         }
       ]
     })
-  ],
+  ]
 })
 export class UpdateUserModule { }
 

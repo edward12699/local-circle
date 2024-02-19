@@ -1,18 +1,30 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { FilterableField, KeySet, CursorConnection, QueryOptions } from '@nestjs-query/query-graphql';
+import {
+  FilterableField, KeySet, CursorConnection, QueryOptions, Relation, BeforeCreateMany,
+  BeforeCreateOne,
+  CreateManyInputType,
+  CreateOneInputType,
+} from '@nestjs-query/query-graphql';
+import { getUserID } from '../../helpers';
+import { GqlContext } from '../../auth.guard';
+import { UserDTO } from '../../update-user/dto/update-user.dto';
+
 
 
 @ObjectType()
-export class VoteResultDTO {
+export class VoteDTO {
 
-  @Field({ nullable: true })
-  reply!: Types.ObjectId;
+  @FilterableField(() => ID)
+  id: string
+
+  // @Field(() => ID, { nullable: true })
+  // reply!: Types.ObjectId;
 
   //"upvote" 或 "downvote"
-  @Field({ nullable: true })
+  @FilterableField({ nullable: true })
   voteType?: string;
 
-  @FilterableField({ nullable: true })
-  user!: Types.ObjectId;
+  @FilterableField(() => ID, {})
+  createdBy!: string;
 }

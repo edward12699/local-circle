@@ -1,26 +1,36 @@
 import { IsOptional, IsString, ValidateNested, IsBoolean, IsMongoId, IsArray, IsNotEmpty, IsDate } from 'class-validator';
 import { Type } from 'class-transformer'
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-
+import { GqlContext } from '../../auth.guard';
+import { getUserID } from '../../helpers';
+import {
+  Relation, BeforeCreateMany,
+  BeforeCreateOne,
+  CreateManyInputType,
+  CreateOneInputType,
+  FilterableField
+} from '@nestjs-query/query-graphql';
 
 
 
 @InputType('VoteInput')
+@BeforeCreateOne((input: CreateOneInputType<VoteInputDTO>, context: GqlContext) => {
+  input.input.createdBy = getUserID(context)
+  return input;
+})
 export class VoteInputDTO {
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  openid!: string;
 
   @IsString()
   @IsNotEmpty()
-  @Field({ nullable: false })
+  @FilterableField({ nullable: false })
   voteType!: string;
 
-  @Field()
-  @IsMongoId()
-  @IsNotEmpty()
-  reply!: Types.ObjectId;
+  // @Field(() => ID)
+  // @IsMongoId()
+  // @IsNotEmpty()
+  // reply!: Types.ObjectId;
 
+  @FilterableField(() => String, { nullable: true })
+  createdBy?: string;
 }

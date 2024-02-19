@@ -1,14 +1,35 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, ID, InputType } from '@nestjs/graphql';
 import { FilterableField, KeySet, CursorConnection, QueryOptions } from '@nestjs-query/query-graphql';
 import { Types } from 'mongoose';
+import {
+  Relation, BeforeCreateMany,
+  BeforeCreateOne,
+  CreateManyInputType,
+  CreateOneInputType,
+  FilterableUnPagedRelation,
+  UnPagedRelation
+} from '@nestjs-query/query-graphql';
+import { PostDTO } from '../../post/dto/post.dto';
+import { UserDTO } from '../../update-user/dto/update-user.dto';
+import { GqlContext } from '../../auth.guard';
+import { getUserID } from '../../helpers';
+import { VoteDTO } from '../../vote/dto/vote.dto';
 
-class votes {
-  upvotes!: number
-  downvotes!: number
+@ObjectType()
+export class Votes {
+  @Field()
+  upVotes!: number;
+
+  @Field()
+  downVotes!: number
 }
 
 @ObjectType()
-export class ReplyResultDTO {
+@Relation('post', () => PostDTO, { disableRemove: true })
+@UnPagedRelation('votes', () => VoteDTO, { disableRemove: false })
+export class ReplyDTO {
+  @FilterableField(() => ID)
+  id!: string;
 
   @Field()
   content!: string;
@@ -21,13 +42,16 @@ export class ReplyResultDTO {
   createdAt!: Date;
 
 
-  @Field({})
-  user?: Types.ObjectId;
+  // @Field(() => UserDTO, {})
+  // createdBy!: UserDTO;
 
-  @Field({})
-  post?: Types.ObjectId
+  @Field(() => ID)
+  createdBy: string;
 
 
-  @Field(() => votes)
-  votes!: votes
+  // @Field(() => Votes, { nullable: true })
+  // votesCount?: Votes;
+
+  // @Field(() => Boolean, { nullable: true })
+  // votedByCurrentUser: Boolean | undefined;
 }

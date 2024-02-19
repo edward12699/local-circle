@@ -32,4 +32,4 @@ const guards = [AuthGuard];
     }),
   ],
 })
-export class TodoItemModule {}
+export class TodoItemModule { }

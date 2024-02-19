@@ -7,16 +7,16 @@ import { Base } from '@typegoose/typegoose/lib/defaultClasses';
 @modelOptions({
   schemaOptions: {
     timestamps: true,
-    collection: 'users',
+    collection: 'user',
     toObject: { virtuals: true },
   },
 })
-export class User implements Base {
+export class UserEntity implements Base {
   _id!: Types.ObjectId;
 
   id!: string;
 
-  @Prop({ required: false })
+  @Prop({ required: true })
   openid!: string;
 
   @Prop()

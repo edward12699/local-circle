@@ -24,6 +24,27 @@ services:
   #     - "3306"
   #   ports:
   #     - "3306:3306"
+
+  localCircle:
+  image: ed12699/local-circle:latest
+  ports:
+    - "4456:4456"
+  depends_on:
+    - redis
+    - mongo
+  environment:
+    SECRET_ACCESS_KEY: ${SECRET_ACCESS_KEY}
+    REGION: ${REGION}
+    BUCKET: ${BUCKET}
+    DB_USER: "DB_USER"
+    REDIS_HOST: ${REDIS_HOST}
+    REDIS_PORT: ${REDIS_PORT}
+    REDIS_DB: ${REDIS_DB}
+    REDIS_PASSWORD: ${REDIS_PASSWORD}
+    REDIS_PRIFIX: ${REDIS_PRIFIX}
+  volumes:
+    - ~/app/local-circle/logs:/app/logs
+
   redis:
     image: "redis:6"
     command: redis-server --requirepass ${REDIS_PASSWORD}

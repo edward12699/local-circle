@@ -1,0 +1,47 @@
+name: Docker Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - new-starter
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker-compose -f docker-compose-build.yml build
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ed12699/local-circle:latest
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and Deploy to Production Server
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} << EOF
+            cd ~/app/local-circle
+            git pull
+            docker-compose pull
+            docker-compose up -d
+          EOF
+env:
+    PRIVATE_KEY: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+    ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+    SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+    REGION: ${{ secrets.REGION }}
+    BUCKET: ${{ secrets.BUCKET }}
+    POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}

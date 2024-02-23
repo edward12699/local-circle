@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  local-circle:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: ed12699/local-circle:latest
+    ports:
+      - "3456:3456"

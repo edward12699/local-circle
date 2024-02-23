@@ -26,7 +26,7 @@ services:
   #     - "3306:3306"
 
   localCircle:
-  image: ed12699/local-circle:latest
+  image: "ed12699/local-circle:latest"
   ports:
     - "4456:4456"
   depends_on:

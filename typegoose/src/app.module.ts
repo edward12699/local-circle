@@ -31,7 +31,7 @@ const { uri, ...options } = mongooseConfig('local-circle', 'local', 'local-circl
 });
 
 console.log(redisOptions)
-
+export { uri }
 
 @Module({
   imports: [
@@ -71,6 +71,7 @@ console.log(redisOptions)
 })
 export class AppModule implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
+    console.log(1111111)
     await this.waitForMongoDB();
   }
 

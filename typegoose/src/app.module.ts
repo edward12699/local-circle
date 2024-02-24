@@ -69,7 +69,7 @@ console.log(redisOptions)
     },
   ],
 })
-export class AppModule {
+export class AppModule implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
     await this.waitForMongoDB();
   }

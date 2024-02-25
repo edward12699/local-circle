@@ -31,6 +31,8 @@ export class ChatroomService {
       db: Number(process.env.REDIS_DB),
       keyPrefix: process.env.REDIS_PRIFIX
     };
+    console.log('redis option ', options)
+
 
     this.pubSub = new RedisPubSub({
       publisher: new Redis(options),

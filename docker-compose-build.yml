@@ -7,4 +7,4 @@ services:
       dockerfile: ./Dockerfile
     image: ed12699/local-circle:latest
     ports:
-      - "3456:3456"
+      - "4456:4456"

@@ -13,7 +13,8 @@ export const mongooseConfig = (
   password: string,
   overrides?: Partial<MongooseModuleOptions>
 ): MongooseModuleOptions => ({
-  uri: `mongodb://${username}:${password}@localhost/${db}?authSource=admin`,
+  // uri: `mongodb://${username}:${password}@localhost/${db}?authSource=admin`,// 用于本地非docker 启动
+  uri: `mongodb://${username}:${password}@local-circle-mongo-1/${db}?authSource=admin`,//用于服务放入docker后启动，因为有环境隔离
   useNewUrlParser: true,
   ...overrides,
 });

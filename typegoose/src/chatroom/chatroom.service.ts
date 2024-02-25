@@ -26,7 +26,8 @@ export class ChatroomService {
     const options = {
       // host: 'localhost', //本地启动用
       host: 'local-circle-redis-1',
-      port: Number(process.env.REDIS_PORT),
+      // port: Number(process.env.REDIS_PORT),
+      port: 6379,
       password: process.env.REDIS_PASSWORD,
       db: Number(process.env.REDIS_DB),
       keyPrefix: process.env.REDIS_PRIFIX

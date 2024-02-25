@@ -24,7 +24,8 @@ export class ChatroomService {
   ) {
     // https://github.com/redis/ioredis
     const options = {
-      host: 'localhost',
+      // host: 'localhost', //本地启动用
+      host: 'local-circle-redis-1',
       port: Number(process.env.REDIS_PORT),
       password: process.env.REDIS_PASSWORD,
       db: Number(process.env.REDIS_DB),

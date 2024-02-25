@@ -21,7 +21,6 @@ import { ConfigModule } from '@nestjs/config';
 import { mongoose } from '@typegoose/typegoose';
 
 
-import { options as redisOptions } from './redis.config'
 
 const { uri, ...options } = mongooseConfig('local-circle', 'local', 'local-circle', {
   useNewUrlParser: true,
@@ -30,7 +29,6 @@ const { uri, ...options } = mongooseConfig('local-circle', 'local', 'local-circl
   useFindAndModify: false,
 });
 
-console.log(redisOptions)
 export { uri }
 
 @Module({

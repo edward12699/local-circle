@@ -69,7 +69,6 @@ export { uri }
 })
 export class AppModule implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
-    console.log(1111111)
     await this.waitForMongoDB();
   }
 

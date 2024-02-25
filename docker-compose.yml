@@ -28,7 +28,7 @@ services:
   localCircle:
     image: "ed12699/local-circle:latest"
     ports:
-      - "4456:4456"
+      - "4456:3000"
     depends_on:
       - redis
       - mongo

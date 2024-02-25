@@ -33,11 +33,14 @@ export class ChatroomService {
     };
     console.log('redis option ', options)
 
-
-    this.pubSub = new RedisPubSub({
-      publisher: new Redis(options),
-      subscriber: new Redis(options),
-    });
+    try {
+      this.pubSub = new RedisPubSub({
+        publisher: new Redis(options),
+        subscriber: new Redis(options),
+      });
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async sendMessage(roomId: string, message: string, userID: string): Promise<void> {

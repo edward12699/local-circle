@@ -3,7 +3,8 @@ module.exports = {
     {
       name: 'local-circle-app',
       script: 'npm',
-      args: ['run', 'start', '--', 'typegoose'],
+      cwd: './';
+      args: 'run start -- typegoose',
       instances: 1,
       autorestart: true,
       watch: false,

@@ -12,4 +12,4 @@ RUN npm install --force
 COPY . .
 
 # CMD ["npm", "run","start","--","typegoose"]
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+CMD ["pm2-runtime", "start", "npm", "--", "start", "--", "typegoose"]
